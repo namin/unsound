@@ -1,12 +1,12 @@
 #!/bin/bash
 set -e -v
 
-echo "### CHECK VERSION"
+### CHECK VERSION
 java -version
 
-echo "### COMPILE"
+### COMPILE
 cat $1 >Unsound.java
 javac Unsound.java
 
-echo "### RUN"
+### RUN
 java Unsound
