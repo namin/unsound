@@ -1,0 +1,12 @@
+#!/bin/bash
+set -e
+
+echo "CHECK VERSION"
+java -version
+
+echo "COMPILE"
+cat $1 >Unsound.java
+javac Unsound.java
+
+echo "RUN"
+java Unsound
