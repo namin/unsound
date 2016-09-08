@@ -1,7 +1,7 @@
 # Artifact for _Java and Scala's Type Systems are Unsound: The Existential Crisis of Null Pointers_
 
-We provide the three programs as listed in the paper, and step-by-step
-instructions on how to compile and run them.
+We provide the three programs as listed in the paper (Amin and Tate, OOPSLA'16 _forthcoming_),
+and step-by-step instructions on how to compile and run them.
 
 - `Unsound.java` for Java 8
 - `Unsound9.java` for Java 9
