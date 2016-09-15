@@ -1,6 +1,10 @@
 #!/bin/bash
 set -e -v
 
+### PICK VERSION
+export JAVA_HOME=/usr/lib/jvm/java-7-oracle
+export PATH=$JAVA_HOME/bin:$PATH
+
 ### CHECK VERSION
 java -version
 
