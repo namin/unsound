@@ -3,7 +3,7 @@
 {% block title %}Unsound Playground{% endblock %}
 
 {% block content %}
-<div class="live" id="ex1">
+<div class="live norun" id="ex1">
 class Unsound {
   static class Bind&lt;A&gt; {
     class Curry&lt;B extends A&gt; {
@@ -26,6 +26,25 @@ class Unsound {
     String zero = Unsound.&lt;Integer,String&gt;coerce(0);
   }
 }
+</div>
+
+<div class="live" id="run1" data-lib="ex1">
+#!/bin/bash
+set -e -v
+
+### PICK VERSION
+export JAVA_HOME=/usr/lib/jvm/java-7-oracle
+export PATH=$JAVA_HOME/bin:$PATH
+
+### CHECK VERSION
+java -version
+
+### COMPILE
+cat $1 >Unsound.java
+javac Unsound.java
+
+### RUN
+java Unsound
 </div>
 
 {% endblock %}
