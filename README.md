@@ -2,6 +2,7 @@
 
 We provide the three programs as listed in the paper (Amin and Tate, OOPSLA'16 _forthcoming_),
 and step-by-step instructions on how to compile and run them.
+We also offer <a href="http://io.livecode.ch/learn/namin/unsound">an interactive playground</a>.
 
 - `Unsound.java` for Java 8
 - `Unsound9.java` for Java 9
