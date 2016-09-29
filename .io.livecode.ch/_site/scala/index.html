@@ -1,25 +1,30 @@
 {% extends "base_livecode.html" %}
 
-{% block title %}Unsound Playground{% endblock %}
+{% block title %}The Unsound Playground{% endblock %}
 
 {% block content %}
-<div><a href="../unsound">Java</a> / Scala
-</div>
 
 <div style="float:right;">
-<a href="https://github.com/namin/unsound/blob/master/doc/unsound-oopsla16.pdf"><img src="http://raw.githubusercontent.com/namin/unsound/master/doc/unsound-oopsla16.png"></img></a>
+<a href="https://raw.githubusercontent.com/namin/unsound/master/doc/unsound-oopsla16.pdf"><img style="border: 2px solid black" src="http://raw.githubusercontent.com/namin/unsound/master/doc/unsound-oopsla16.png"></img></a>
 </div>
 
 <p>
-Try these examples, each is a valid Scala program:
-<ul>
-<li><a href="#e7374b2bbcbd2e4fff52e729b9e5d646">unsound.scala in Scala 2.11.8 (compiles, runs to cast exception)</a></li>
-<li><a href="#18fa3ec8fdec51da937d9ac5a29d81f2">unsound.scala in Scala 2.9.3 (does not compile due to restrictions on dependent methods)</a></li>
-<li><a href="#c15a2fb8d0daed0dc6bddaf425bc64f9">unsound_legacy.scala in Scala 2.9.3 (compiles, runs to cast exception)</a></li>
-<li><a href="#59c713356ccc1e433c9c0fe7b45ec12b">unsoundForward.scala in Scala 2.11.8 (compiles, runs to cast exception -- courtesy of Dmitry Petrashko)</a></li>
-<li><a href="#6b41ca8cbab70dc955c6e35b929ccfcf">unsoundStatics.scala in Scala 2.11.8 (compiles, runs to cast exception -- courtesy of Dmitry Petrashko)</a></li>
-</ul>
+We, <a href="http://namin.net/">Nada Amin</a> and <a href="http://www.cs.cornell.edu/~ross/">Ross Tate</a>, broke the Java and Scala type systems!</br>
+Try it out for yourself by running the examples, which throw cast exceptions even though they contain no casts &darr;</br>
+Read our paper <cite>Java and Scala's Type Systems are Unsound</cite> to get a step-by-step walkthrough of how these examples work &rarr;</br>
+Come up with your own examples and use the save icon to update the URL to a permalink to your code &#8625;
 </p>
+
+<div><a href="../unsound">Java</a> / Scala
+</div>
+
+<ul style="list-style-type: none; margin-left: -2em; margin-top: .4em">
+<li><a href="#9e239ac3389702ac3c41acf1af781d56">unsound.scala in Scala 2.11.8</a></li>
+<li><a href="#6335177464268d7a08ac5ed03fee0989">unsound.scala in Scala 2.9.3</a> (incorrectly rejected by older compiler)</li>
+<li><a href="#a406d726d2fd1c7cf1b166db540fa1bf">legacy.scala in Scala 2.9.3</a> (the first program we broke Scala with)</li>
+<li><a href="#9ef5cf28bf42bc0aab48f65c1b9cad27">nullless.scala in Scala 2.11.8</a> (this program has no occurence of <tt>null</tt>, courtesy of <a href="https://d-d.me/">Dmitry Petrashko</a>)</li>
+<li><a href="#0f94d6013b70ba75d0c33d3943bfaf02">unsoundStatic.scala in Scala 2.11.8</a> (this program has no occurence of <tt>null</tt>, courtesy of <a href="https://d-d.me/">Dmitry Petrashko</a>)</li>
+</ul>
 
 <div class="live norun" id="ex1" data-mode="text/x-scala">
 object unsound {
