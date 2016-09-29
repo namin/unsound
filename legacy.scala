@@ -1,4 +1,3 @@
-object unsound_legacy {
   trait LowerBound[T] {
     type M >: T;
   }
