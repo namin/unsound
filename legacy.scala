@@ -1,3 +1,4 @@
+object legacy {
   trait LowerBound[T] {
     type M >: T;
   }
