@@ -1,45 +1,101 @@
 {% extends "base_livecode.html" %}
 
-{% block title %}Unsound Playground{% endblock %}
+{% block title %}The Unsound Playground{% endblock %}
 
 {% block content %}
 
-<div>Java / <a href="unsound/scala">Scala</a>
-</div>
-
-<div style="float:right;">
-<a href="https://github.com/namin/unsound/blob/master/doc/unsound-oopsla16.pdf"><img src="http://raw.githubusercontent.com/namin/unsound/master/doc/unsound-oopsla16.png"></img></a>
+<div style="float:right;margin-left:1em">
+<a href="https://raw.githubusercontent.com/namin/unsound/master/doc/unsound-oopsla16.pdf"><img style="border: 2px solid black" src="http://raw.githubusercontent.com/namin/unsound/master/doc/unsound-oopsla16.png"></img></a>
+<figcaption style="text-align:center">OOPSLA '16<hr/>Distinguished<br/>Artifact Award</figcaption>
 </div>
 
 <p>
-Try these examples, each is a valid Java program according to the specification:
-<ul>
-<li><a href="#2e4392fc6392155ecfdb91c5fd183a01">Unsound.java in Java 8 (compiles, runs to cast exception)</a></li>
-<li><a href="#1425505f7c9f62770632bff6e520b866">Unsound.java in Java 9 (does not compile)</a></li>
-<li><a href="#cb32d4994710d626c877d2387712be99">Unsound9.java in Java 9 (compiles, runs to cast exception)</a></li>
-<li><a href="#e544cf105b4d301bfb821ff1a64ba833">UnsoundSpec.java in Java 6 (does not compile)</a></li>
-<li><a href="#c27c67c524eade3bbe15b1993b0a846a">Nullless.java in Java 8 (compiles, run to cast exception)</a></li>
-</ul>
+We, <a href="http://namin.net/">Nada Amin</a> and <a href="http://www.cs.cornell.edu/~ross/">Ross Tate</a>, broke the Java and Scala type systems!</br>
+Try it out for yourself by running the examples, which throw cast exceptions even though they contain no casts &darr;</br>
+Read our paper <cite>Java and Scala's Type Systems are Unsound</cite> to learn how these examples work &rarr;</br>
+Come up with your own examples and use the save icon to update the URL to a permalink to your code &#8625;
 </p>
+
+<p><b><font size="4">Which language would you like to break?</font></b><br/>
+<font color="red">Java</font> / <a style="color:grey" href="unsound/scala">Scala</a></p>
+
+<ul style="list-style-type: none; margin-left: -1.5em">
+<li><a id="e0" href="#2e4392fc6392155ecfdb91c5fd183a01">Unsound.java in Java 8</a> (the first program we broke Java with, derived from <a style="color:grey" href="unsound/scala#a406d726d2fd1c7cf1b166db540fa1bf">legacy.scala</a>)</li>
+<li><a id="e1" href="#1425505f7c9f62770632bff6e520b866">Unsound.java in Java 9</a> (sometimes compilers incorrectly reject valid code)</li>
+<li><a id="e2" href="#cb32d4994710d626c877d2387712be99">Unsound9.java in Java 9</a> (we even broke Java in the future) </li>
+<li><a id="e3" href="#e544cf105b4d301bfb821ff1a64ba833">UnsoundSpec.java in Java 6</a> (incorrectly rejected unsound program that has been valid since Java 5 in 2004)</li>
+<li><a id="e4" href="#c27c67c524eade3bbe15b1993b0a846a">Nullless.java in Java 8</a> (this program has no occurence of <tt>null</tt>)</a></li>
+<li><a id="e5" href="#46b717349115fa58e2090cab119da61c">SingleParameters.java in Java 8</a> (every class and method in this program has exactly one parameter)</li>
+</ul>
+
+<script type="text/javascript">
+function rehash() {
+ for (var i=0; i<=5; i++) {
+  var link = document.getElementById("e" + i);
+  link.style.color = "grey";
+  link.style["text-decoration"] = "underline";
+ }
+ var hash = window.location.hash;
+ var index = hash.indexOf("#");
+ if (index < 0) {
+  last = document.getElementById("e0");
+  last.style.color = "red";
+  last.style["text-decoration"] = "none";
+ } else {
+  hash = hash.substring(index);
+  for (var i=0; i<=5; i++) {
+   var link = document.getElementById("e" + i);
+   var href = link.href;
+   href = href.substring(href.indexOf("#"));
+   if (href == hash) {
+    last = link;
+    last.style.color = "red";
+    last.style["text-decoration"] = "none";
+   }
+  }
+ }
+}
+rehash();
+if ("onhashchange" in window) {
+ window.onhashchange = rehash;
+} else {
+ var last = null;
+ function paintlinks() {
+  if (last) {
+   last.style.color = "grey";
+   last.style["text-decoration"] = "underline";
+  }
+  last = this;
+  last.style.color = "red";
+  last.style["text-decoration"] = "none";
+ }
+ for (var i=0; i<=5; i++) {
+  var link = document.getElementById("e" + i);
+  link.style.color = "grey";
+  if (link.addEventListener) {
+   link.addEventListener("click",paintlinks,false);
+  } else if (link.attachEvent) {
+   link.attachEvent("onclick",paintlinks);
+  } else {
+   link.onclick=rememberLink;
+  }
+ }
+}
+</script>
 
 <div class="live norun" id="ex1">
 class Unsound {
+  static class Constrain&lt;A, B extends A&gt; {}
   static class Bind&lt;A&gt; {
-    class Curry&lt;B extends A&gt; {
-	  A curry(B b) { return b; }
-	}
     &lt;B extends A&gt;
-    Curry&lt;B&gt; upcast(Constraint&lt;B&gt; constraint) {
-      return new Curry&lt;B&gt;();
+    A upcast(Constrain&lt;A,B&gt; constrain, B b) {
+      return b;
     }
-    class Constraint&lt;B extends A&gt; {}
-	&lt;B&gt; A coerce(B t) {
-	  Constraint&lt;? super B&gt; constraint = null;
-	  return upcast(constraint).curry(t);
-	}
   }
   static &lt;T,U&gt; U coerce(T t) {
-    return new Bind&lt;U&gt;().&lt;T&gt;coerce(t);
+    Constrain&lt;U,? super T&gt; constrain = null;
+    Bind&lt;U&gt; bind = new Bind&lt;U&gt;();
+    return bind.upcast(constrain, t);
   }
   public static void main(String[] args) {
     String zero = Unsound.&lt;Integer,String&gt;coerce(0);
@@ -52,7 +108,7 @@ class Unsound {
 set -e -v
 
 ### PICK VERSION
-export JAVA_HOME=/usr/lib/jvm/java-7-oracle
+export JAVA_HOME=/usr/lib/jvm/java-8-oracle
 export PATH=$JAVA_HOME/bin:$PATH
 
 ### CHECK VERSION

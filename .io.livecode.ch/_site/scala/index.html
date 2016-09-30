@@ -1,33 +1,95 @@
 {% extends "base_livecode.html" %}
 
-{% block title %}Unsound Playground{% endblock %}
+{% block title %}The Unsound Playground{% endblock %}
 
 {% block content %}
-<div><a href="../unsound">Java</a> / Scala
-</div>
 
-<div style="float:right;">
-<a href="https://github.com/namin/unsound/blob/master/doc/unsound-oopsla16.pdf"><img src="http://raw.githubusercontent.com/namin/unsound/master/doc/unsound-oopsla16.png"></img></a>
+<div style="float:right;margin-left:1em">
+<a href="https://raw.githubusercontent.com/namin/unsound/master/doc/unsound-oopsla16.pdf"><img style="border: 2px solid black" src="http://raw.githubusercontent.com/namin/unsound/master/doc/unsound-oopsla16.png"></img></a>
+<figcaption style="text-align:center">OOPSLA '16<hr/>Distinguished<br/>Artifact Award</figcaption>
 </div>
 
 <p>
-Try these examples, each is a valid Scala program:
-<ul>
-<li><a href="#e7374b2bbcbd2e4fff52e729b9e5d646">unsound.scala in Scala 2.11.8 (compiles, runs to cast exception)</a></li>
-<li><a href="#18fa3ec8fdec51da937d9ac5a29d81f2">unsound.scala in Scala 2.9.3 (does not compile due to restrictions on dependent methods)</a></li>
-<li><a href="#c15a2fb8d0daed0dc6bddaf425bc64f9">unsound_legacy.scala in Scala 2.9.3 (compiles, runs to cast exception)</a></li>
-<li><a href="#59c713356ccc1e433c9c0fe7b45ec12b">unsoundForward.scala in Scala 2.11.8 (compiles, runs to cast exception -- courtesy of Dmitry Petrashko)</a></li>
-<li><a href="#6b41ca8cbab70dc955c6e35b929ccfcf">unsoundStatics.scala in Scala 2.11.8 (compiles, runs to cast exception -- courtesy of Dmitry Petrashko)</a></li>
-</ul>
+We, <a href="http://namin.net/">Nada Amin</a> and <a href="http://www.cs.cornell.edu/~ross/">Ross Tate</a>, broke the Java and Scala type systems!</br>
+Try it out for yourself by running the examples, which throw cast exceptions even though they contain no casts &darr;</br>
+Read our paper <cite>Java and Scala's Type Systems are Unsound</cite> to learn how these examples work &rarr;</br>
+Come up with your own examples and use the save icon to update the URL to a permalink to your code &#8625;
 </p>
 
+<p><b><font size="4">Which language would you like to break?</font></b><br/>
+<a style="color:grey" href="../unsound">Java</a> / <font color="red">Scala</font></p>
+
+<ul style="list-style-type: none; margin-left: -1.5em">
+<li><a id="e0" href="#bc53cf1374c5181384667a960aa6d49c">unsoundMini.scala in Scala 2.11.8</a></li>
+<li><a id="e1" href="#9e239ac3389702ac3c41acf1af781d56">unsound.scala in Scala 2.11.8</a></li>
+<li><a id="e2" href="#6335177464268d7a08ac5ed03fee0989">unsound.scala in Scala 2.9.3</a> (incorrectly rejected by older compiler)</li>
+<li><a id="e3" href="#a406d726d2fd1c7cf1b166db540fa1bf">legacy.scala in Scala 2.9.3</a> (the first program we broke Scala with)</li>
+<li><a id="e4" href="#9ef5cf28bf42bc0aab48f65c1b9cad27">nullless.scala in Scala 2.11.8</a> (this program has no occurence of <tt>null</tt>, courtesy of <a href="https://d-d.me/">Dmitry Petrashko</a>)</li>
+<li><a id="e5" href="#0f94d6013b70ba75d0c33d3943bfaf02">unsoundStatic.scala in Scala 2.11.8</a> (this program has no occurence of <tt>null</tt>, courtesy of <a href="https://d-d.me/">Dmitry Petrashko</a>)</li>
+</ul>
+
+<script type="text/javascript">
+function rehash() {
+ for (var i=0; i<=5; i++) {
+  var link = document.getElementById("e" + i);
+  link.style.color = "grey";
+  link.style["text-decoration"] = "underline";
+ }
+ var hash = window.location.hash;
+ var index = hash.indexOf("#");
+ if (index < 0) {
+  last = document.getElementById("e0");
+  last.style.color = "red";
+  last.style["text-decoration"] = "none";
+ } else {
+  hash = hash.substring(index);
+  for (var i=0; i<=5; i++) {
+   var link = document.getElementById("e" + i);
+   var href = link.href;
+   href = href.substring(href.indexOf("#"));
+   if (href == hash) {
+    last = link;
+    last.style.color = "red";
+    last.style["text-decoration"] = "none";
+   }
+  }
+ }
+}
+rehash();
+if ("onhashchange" in window) {
+ window.onhashchange = rehash;
+} else {
+ var last = null;
+ function paintlinks() {
+  if (last) {
+   last.style.color = "grey";
+   last.style["text-decoration"] = "underline";
+  }
+  last = this;
+  last.style.color = "red";
+  last.style["text-decoration"] = "none";
+ }
+ for (var i=0; i<=5; i++) {
+  var link = document.getElementById("e" + i);
+  link.style.color = "grey";
+  if (link.addEventListener) {
+   link.addEventListener("click",paintlinks,false);
+  } else if (link.attachEvent) {
+   link.attachEvent("onclick",paintlinks);
+  } else {
+   link.onclick=rememberLink;
+  }
+ }
+}
+</script>
+
 <div class="live norun" id="ex1" data-mode="text/x-scala">
-object unsound {
-  trait A { type L >: Any}
-  def id1(a: A, x: Any): a.L = x
-  val p: A { type L <: Nothing } = null
-  def id2(x: Any): Nothing = id1(p, x)
-  id2("oh")
+object unsoundMini {
+  trait A { type L &gt;: Any}
+  def upcast(a: A, x: Any): a.L = x
+  val p: A { type L &lt;: Nothing } = null
+  def coerce(x: Any): Nothing = upcast(p, x)
+  coerce("Uh oh!")
 }
 </div>
 
@@ -46,10 +108,11 @@ java -version
 scala -version
 
 ### COMPILE
-scalac unsound.scala
+cat $1 >unsoundMini.scala
+scalac unsoundMini.scala
 
 ### RUN
-scala unsound
+scala unsoundMini
 </div>
 
 {% endblock %}
