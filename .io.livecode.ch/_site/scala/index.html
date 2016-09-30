@@ -19,6 +19,7 @@ Come up with your own examples and use the save icon to update the URL to a perm
 <a href="../unsound">Java</a> / <b>Scala</b></p>
 
 <ul style="list-style-type: none; margin-left: -1.5em">
+<li><a style="color:#551A8B" href="#bc53cf1374c5181384667a960aa6d49c">unsoundMini.scala in Scala 2.11.8</a></li>
 <li><a href="#9e239ac3389702ac3c41acf1af781d56">unsound.scala in Scala 2.11.8</a></li>
 <li><a href="#6335177464268d7a08ac5ed03fee0989">unsound.scala in Scala 2.9.3</a> (incorrectly rejected by older compiler)</li>
 <li><a href="#a406d726d2fd1c7cf1b166db540fa1bf">legacy.scala in Scala 2.9.3</a> (the first program we broke Scala with)</li>
@@ -27,12 +28,12 @@ Come up with your own examples and use the save icon to update the URL to a perm
 </ul>
 
 <div class="live norun" id="ex1" data-mode="text/x-scala">
-object unsound {
+object unsoundMini {
   trait A { type L >: Any}
-  def id1(a: A, x: Any): a.L = x
+  def upcast(a: A, x: Any): a.L = x
   val p: A { type L <: Nothing } = null
-  def id2(x: Any): Nothing = id1(p, x)
-  id2("oh")
+  def coerce(x: Any): Nothing = upcast(p, x)
+  coerce("Uh oh!")
 }
 </div>
 
@@ -51,10 +52,11 @@ java -version
 scala -version
 
 ### COMPILE
-scalac unsound.scala
+cat $1 >unsoundMini.scala
+scalac unsoundMini.scala
 
 ### RUN
-scala unsound
+scala unsoundMini
 </div>
 
 {% endblock %}
