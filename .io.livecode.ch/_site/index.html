@@ -29,20 +29,20 @@ Come up with your own examples and use the save icon to update the URL to a perm
 
 <div class="live norun" id="ex1">
 class Unsound {
-  static class Constrain<A, B extends A> {}
-  static class Bind<A> {
-    <B extends A>
-    A upcast(Constrain<A,B> constrain, B b) {
+  static class Constrain%lt;A, B extends A&gt; {}
+  static class Bind%lt;A&gt; {
+    %lt;B extends A&gt;
+    A upcast(Constrain%lt;A,B&gt; constrain, B b) {
       return b;
     }
   }
-  static <T,U> U coerce(T t) {
-    Constrain<U,? super T> constrain = null;
-    Bind<U> bind = new Bind<U>();
+  static %lt;T,U&gt; U coerce(T t) {
+    Constrain%lt;U,? super T&gt; constrain = null;
+    Bind%lt;U&gt; bind = new Bind%lt;U&gt;();
     return bind.upcast(constrain, t);
   }
   public static void main(String[] args) {
-    String zero = Unsound.<Integer,String>coerce(0);
+    String zero = Unsound.%lt;Integer,String&gt;coerce(0);
   }
 }
 </div>

@@ -29,9 +29,9 @@ Come up with your own examples and use the save icon to update the URL to a perm
 
 <div class="live norun" id="ex1" data-mode="text/x-scala">
 object unsoundMini {
-  trait A { type L >: Any}
+  trait A { type L &gt;: Any}
   def upcast(a: A, x: Any): a.L = x
-  val p: A { type L <: Nothing } = null
+  val p: A { type L &lt;: Nothing } = null
   def coerce(x: Any): Nothing = upcast(p, x)
   coerce("Uh oh!")
 }
