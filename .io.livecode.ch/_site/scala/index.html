@@ -16,16 +16,71 @@ Come up with your own examples and use the save icon to update the URL to a perm
 </p>
 
 <p><b><font size="4">Which language would you like to break?</font></b><br/>
-<a href="../unsound">Java</a> / <b>Scala</b></p>
+<a style="color:grey" href="../unsound">Java</a> / <font color="red">Scala</font></p>
 
 <ul style="list-style-type: none; margin-left: -1.5em">
-<li><a style="color:#551A8B" href="#bc53cf1374c5181384667a960aa6d49c">unsoundMini.scala in Scala 2.11.8</a></li>
-<li><a href="#9e239ac3389702ac3c41acf1af781d56">unsound.scala in Scala 2.11.8</a></li>
-<li><a href="#6335177464268d7a08ac5ed03fee0989">unsound.scala in Scala 2.9.3</a> (incorrectly rejected by older compiler)</li>
-<li><a href="#a406d726d2fd1c7cf1b166db540fa1bf">legacy.scala in Scala 2.9.3</a> (the first program we broke Scala with)</li>
-<li><a href="#9ef5cf28bf42bc0aab48f65c1b9cad27">nullless.scala in Scala 2.11.8</a> (this program has no occurence of <tt>null</tt>, courtesy of <a href="https://d-d.me/">Dmitry Petrashko</a>)</li>
-<li><a href="#0f94d6013b70ba75d0c33d3943bfaf02">unsoundStatic.scala in Scala 2.11.8</a> (this program has no occurence of <tt>null</tt>, courtesy of <a href="https://d-d.me/">Dmitry Petrashko</a>)</li>
+<li><a id="e0" href="#bc53cf1374c5181384667a960aa6d49c">unsoundMini.scala in Scala 2.11.8</a></li>
+<li><a id="e1" href="#9e239ac3389702ac3c41acf1af781d56">unsound.scala in Scala 2.11.8</a></li>
+<li><a id="e2" href="#6335177464268d7a08ac5ed03fee0989">unsound.scala in Scala 2.9.3</a> (incorrectly rejected by older compiler)</li>
+<li><a id="e3" href="#a406d726d2fd1c7cf1b166db540fa1bf">legacy.scala in Scala 2.9.3</a> (the first program we broke Scala with)</li>
+<li><a id="e4" href="#9ef5cf28bf42bc0aab48f65c1b9cad27">nullless.scala in Scala 2.11.8</a> (this program has no occurence of <tt>null</tt>, courtesy of <a href="https://d-d.me/">Dmitry Petrashko</a>)</li>
+<li><a id="e5" href="#0f94d6013b70ba75d0c33d3943bfaf02">unsoundStatic.scala in Scala 2.11.8</a> (this program has no occurence of <tt>null</tt>, courtesy of <a href="https://d-d.me/">Dmitry Petrashko</a>)</li>
 </ul>
+
+<script type="text/javascript">
+function rehash() {
+ for (var i=0; i<=5; i++) {
+  var link = document.getElementById("e" + i);
+  link.style.color = "grey";
+  link.style["text-decoration"] = "underline";
+ }
+ var hash = window.location.hash;
+ var index = hash.indexOf("#");
+ if (index < 0) {
+  last = document.getElementById("e0");
+  last.style.color = "red";
+  last.style["text-decoration"] = "none";
+ } else {
+  hash = hash.substring(index);
+  for (var i=0; i<=5; i++) {
+   var link = document.getElementById("e" + i);
+   var href = link.href;
+   href = href.substring(href.indexOf("#"));
+   if (href == hash) {
+    last = link;
+    last.style.color = "red";
+    last.style["text-decoration"] = "none";
+   }
+  }
+ }
+}
+rehash();
+if ("onhashchange" in window) {
+ window.onhashchange = rehash;
+} else {
+ var last = null;
+ function paintlinks() {
+  if (last) {
+   last.style.color = "grey";
+   last.style["text-decoration"] = "underline";
+  }
+  last = this;
+  last.style.color = "red";
+  last.style["text-decoration"] = "none";
+ }
+ for (var i=0; i<=5; i++) {
+  var link = document.getElementById("e" + i);
+  link.style.color = "grey";
+  if (link.addEventListener) {
+   link.addEventListener("click",paintlinks,false);
+  } else if (link.attachEvent) {
+   link.attachEvent("onclick",paintlinks);
+  } else {
+   link.onclick=rememberLink;
+  }
+ }
+}
+</script>
 
 <div class="live norun" id="ex1" data-mode="text/x-scala">
 object unsoundMini {

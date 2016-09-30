@@ -16,16 +16,71 @@ Come up with your own examples and use the save icon to update the URL to a perm
 </p>
 
 <p><b><font size="4">Which language would you like to break?</font></b><br/>
-<b>Java</b> / <a href="unsound/scala">Scala</a></p>
+<font color="red">Java</font> / <a style="color:grey" href="unsound/scala">Scala</a></p>
 
 <ul style="list-style-type: none; margin-left: -1.5em">
-<li><a style="color:#551A8B" href="#2e4392fc6392155ecfdb91c5fd183a01">Unsound.java in Java 8</a> (the first program we broke Java with, derived from <a href="unsound/scala#a406d726d2fd1c7cf1b166db540fa1bf">legacy.scala</a>)</li>
-<li><a href="#1425505f7c9f62770632bff6e520b866">Unsound.java in Java 9</a> (sometimes compilers incorrectly reject valid code)</li>
-<li><a href="#cb32d4994710d626c877d2387712be99">Unsound9.java in Java 9</a> (we even broke Java in the future) </li>
-<li><a href="#e544cf105b4d301bfb821ff1a64ba833">UnsoundSpec.java in Java 6</a> (incorrectly rejected unsound program that has been valid since Java 5 in 2004)</li>
-<li><a href="#c27c67c524eade3bbe15b1993b0a846a">Nullless.java in Java 8</a> (this program has no occurence of <tt>null</tt>)</a></li>
-<li><a href="#46b717349115fa58e2090cab119da61c">SingleParameters.java in Java 8</a> (every class and method in this program has exactly one parameter)</li>
+<li><a id="e0" href="#2e4392fc6392155ecfdb91c5fd183a01">Unsound.java in Java 8</a> (the first program we broke Java with, derived from <a style="color:grey" href="unsound/scala#a406d726d2fd1c7cf1b166db540fa1bf">legacy.scala</a>)</li>
+<li><a id="e1" href="#1425505f7c9f62770632bff6e520b866">Unsound.java in Java 9</a> (sometimes compilers incorrectly reject valid code)</li>
+<li><a id="e2" href="#cb32d4994710d626c877d2387712be99">Unsound9.java in Java 9</a> (we even broke Java in the future) </li>
+<li><a id="e3" href="#e544cf105b4d301bfb821ff1a64ba833">UnsoundSpec.java in Java 6</a> (incorrectly rejected unsound program that has been valid since Java 5 in 2004)</li>
+<li><a id="e4" href="#c27c67c524eade3bbe15b1993b0a846a">Nullless.java in Java 8</a> (this program has no occurence of <tt>null</tt>)</a></li>
+<li><a id="e5" href="#46b717349115fa58e2090cab119da61c">SingleParameters.java in Java 8</a> (every class and method in this program has exactly one parameter)</li>
 </ul>
+
+<script type="text/javascript">
+function rehash() {
+ for (var i=0; i<=5; i++) {
+  var link = document.getElementById("e" + i);
+  link.style.color = "grey";
+  link.style["text-decoration"] = "underline";
+ }
+ var hash = window.location.hash;
+ var index = hash.indexOf("#");
+ if (index < 0) {
+  last = document.getElementById("e0");
+  last.style.color = "red";
+  last.style["text-decoration"] = "none";
+ } else {
+  hash = hash.substring(index);
+  for (var i=0; i<=5; i++) {
+   var link = document.getElementById("e" + i);
+   var href = link.href;
+   href = href.substring(href.indexOf("#"));
+   if (href == hash) {
+    last = link;
+    last.style.color = "red";
+    last.style["text-decoration"] = "none";
+   }
+  }
+ }
+}
+rehash();
+if ("onhashchange" in window) {
+ window.onhashchange = rehash;
+} else {
+ var last = null;
+ function paintlinks() {
+  if (last) {
+   last.style.color = "grey";
+   last.style["text-decoration"] = "underline";
+  }
+  last = this;
+  last.style.color = "red";
+  last.style["text-decoration"] = "none";
+ }
+ for (var i=0; i<=5; i++) {
+  var link = document.getElementById("e" + i);
+  link.style.color = "grey";
+  if (link.addEventListener) {
+   link.addEventListener("click",paintlinks,false);
+  } else if (link.attachEvent) {
+   link.attachEvent("onclick",paintlinks);
+  } else {
+   link.onclick=rememberLink;
+  }
+ }
+}
+</script>
 
 <div class="live norun" id="ex1">
 class Unsound {
